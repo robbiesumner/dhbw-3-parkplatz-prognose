@@ -1,1 +1,3 @@
-# dhbw-3-parkplatz-prognose
+# Parkplatzprognose
+
+Projekt für die Vorlesung Big Data Programming
