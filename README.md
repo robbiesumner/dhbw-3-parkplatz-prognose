@@ -10,5 +10,6 @@ https://web1.karlsruhe.de/robots.txt verbietet nicht das Crawlen der Seite.
 
 ### Implementierung
 1. [`scrape_karlsruhe.py`](scrape_karlsruhe.py): Liest beim einmaligen Aufrufen die freien Parkplätze von jedem Parkplatz auf https://web1.karlsruhe.de/service/Parken und scheibt einen neuen Datensatz in die jeweilige Tabelle im Ordner [data](data).
+    - TODO: Daten für Parkplatztyp sammeln?
 2. Dieses Skript wird alle 5 Minuten von einem Cronjob auf einem EC2 Server ausgeführt. 
     - TODO: Daten von EC2 mit Github synchronisieren?
