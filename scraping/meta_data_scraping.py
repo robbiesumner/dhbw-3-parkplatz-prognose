@@ -47,7 +47,7 @@ if __name__ == "__main__":
     df = pd.DataFrame(
         columns=[
             "Parkhauskuerzel",
-            "Parkplatzname",
+            "Parkhausname",
             "Durchfahrtshoehe",
             "Aufzug",
             "Ladestation",

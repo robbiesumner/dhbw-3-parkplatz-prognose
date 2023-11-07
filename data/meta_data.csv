@@ -1,8 +1,8 @@
-Parkhauskuerzel,Parkplatzname,Durchfahrtshoehe,Aufzug,Ladestation,Gesamtanzahl,Behindertenstellplaetze
+Parkhauskuerzel,Parkhausname,Durchfahrtshoehe,Aufzug,Ladestation,Gesamtanzahl,Behindertenstellplaetze
 K01,Kongresszentrum PH1,190,True,False,495,5
 K02,Kongresszentrum PH2,190,True,True,495,12
 K03,Luisenstraße,200,False,True,210,0
-K04,Staatstheater,200,False,False,230,0
+K04,Staatstheater,200,False,False,240,0
 N02,Passagehof,210,True,False,392,25
 N03,Herrenstraße / Zirkel,200,True,False,269,13
 N05,Schlossplatz,200,True,True,566,3

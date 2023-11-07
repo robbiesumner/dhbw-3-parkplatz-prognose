@@ -7,7 +7,7 @@ def scrape_free_spots(parking_lot):
     BASE_URL = "https://web1.karlsruhe.de/service/Parken/detail.php?id="
 
     # already scraped data
-    parking_data = pd.read_csv(f"./data/{parking_lot}.csv", index_col=0)
+    parking_data = pd.read_csv(f"../data/{parking_lot}.csv", index_col=0)
     parking_data["timestamp"] = pd.to_datetime(parking_data["timestamp"])
 
     try:
@@ -39,7 +39,7 @@ def scrape_free_spots(parking_lot):
                 print(f"   {free_spots.text} free spots")
 
                 # save data to csv
-                parking_data.to_csv(f"./data/{parking_lot}.csv")
+                parking_data.to_csv(f"../data/{parking_lot}.csv")
             else:
                 print("Data already exists: ", timestamp)
 
