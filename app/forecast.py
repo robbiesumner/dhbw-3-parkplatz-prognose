@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import holidays
 
 print("""Willkommen zur Parkhausverfügbarkeitsprognose.
 Im ersten Schritt können Sie einige Filterungen vornehmen.
@@ -40,15 +41,25 @@ except ValueError:
 print("Folgende Parkhäuser entsprechen ihren Filterungen:")
 for index, row in ph_eigenschaften.iterrows():
     parkhaus_info = "{kuerzel}: {name}, Durchfahrtshöhe {hoehe}cm, {behinderten} Behindertenstellplätze vorhanden".format(
-        kuerzel=row['Parkhauskuerzel'],
-        name=row['Parkhausname'],
-        hoehe=row['Durchfahrtshoehe'],
-        behinderten=row['Behindertenstellplaetze']
+        kuerzel=row["Parkhauskuerzel"],
+        name=row["Parkhausname"],
+        hoehe=row["Durchfahrtshoehe"],
+        behinderten=row["Behindertenstellplaetze"],
     )
     print(parkhaus_info)
 
 # Auswahl
-ph_kuerzel = input("Sie können nun ein Parkhaus auswählen. Bitte geben Sie das entsprechende Parkhaus-Kürzel an (z. B. K01): ")
+while True:
+    ph_kuerzel = input(
+        "Sie können nun einen Parkhaus auswählen. Bitte geben Sie das entsprechende Parkhaus-Kürzel an (z. B. K01): "
+    )
+
+    # Überprüfung, ob das eingegebene Kürzel in der Liste der gefilterten Parkhäuser enthalten ist
+    if ph_kuerzel in ph_eigenschaften["Parkhauskuerzel"].values:
+        break
+    else:
+        print("Falsche Eingabe. Bitte geben Sie ein zu den Filterungen passendes Parkhaus-Kürzel ein.")
+
 
 # Laden der entsprechenden csv-Datei des ausgewählten Parkhauses
 ph_verlauf = pd.read_csv("../data/" + ph_kuerzel + ".csv")
@@ -57,13 +68,13 @@ ph_verlauf = pd.read_csv("../data/" + ph_kuerzel + ".csv")
 # Schritt 1: Aggregation auf Stunden
 # ------------------------------------
 # Konvertierung ins datetime-Format
-ph_verlauf['timestamp'] = pd.to_datetime(ph_verlauf['timestamp'])
+ph_verlauf["timestamp"] = pd.to_datetime(ph_verlauf["timestamp"])
 # Abrunden auf die Stunde
-ph_verlauf['timestamp_hour'] = ph_verlauf['timestamp'].dt.floor('H')
+ph_verlauf["timestamp_hour"] = ph_verlauf["timestamp"].dt.floor("H")
 
 # Gruppieren nach Datum und abgerundeter Stunde, dann Mittelwert berechnen
-ph_verlauf_hour = ph_verlauf.groupby(ph_verlauf['timestamp_hour'])['free_spots'].mean()
-ph_verlauf_hour = ph_verlauf_hour.reset_index(name='average_free_spots')
+ph_verlauf_hour = ph_verlauf.groupby(ph_verlauf["timestamp_hour"])["free_spots"].mean()
+ph_verlauf_hour = ph_verlauf_hour.reset_index(name="average_free_spots")
 ph_verlauf_hour = round(ph_verlauf_hour, 0)
 
 # Test-Ausgabe vorhandene Daten als Liniendiagramm
@@ -75,20 +86,36 @@ ph_verlauf_hour = round(ph_verlauf_hour, 0)
 # Schritt 2: Neue Spalte "belegt"
 # ------------------------------------
 # Gesamtanzahl Parkplätze des ausgewählten Parkhauses extrahieren
-gesamtanzahl = ph_eigenschaften[ph_eigenschaften['Parkhauskuerzel'] == ph_kuerzel]['Gesamtanzahl'].iloc[0]
+gesamtanzahl = ph_eigenschaften[ph_eigenschaften["Parkhauskuerzel"] == ph_kuerzel][
+    "Gesamtanzahl"
+].iloc[0]
 # Neue Spalte mit Anzahl belegter Parkplätze
-ph_verlauf_hour['belegt'] = gesamtanzahl - ph_verlauf_hour['average_free_spots']
+ph_verlauf_hour["belegt"] = gesamtanzahl - ph_verlauf_hour["average_free_spots"]
 
 # ------------------------------------
-# Schritt 3: Mittelwert berechnen
+# Schritt 3: Feiertag(e) entfernen
 # ------------------------------------
+
+# Feiertage für Baden-Württemberg
+bw_holidays = holidays.DE(subdiv="BW", years=2023)
+
+# Datenpunkte an Feiertagen löschen, damit Prognose nicht verfälscht wird
+ph_verlauf_hour["feiertag"] = ph_verlauf_hour["timestamp_hour"].dt.floor("D").isin(bw_holidays)
+ph_verlauf_hour = ph_verlauf_hour[ph_verlauf_hour["feiertag"] == False]
+
+# ------------------------------------
+# Schritt 4: Mittelwert berechnen
+# ------------------------------------
+
 # Wochentag und Stunde extrahieren
-ph_verlauf_hour['wochentag'] = ph_verlauf_hour['timestamp_hour'].dt.day_name()
-ph_verlauf_hour['stunde'] = ph_verlauf_hour['timestamp_hour'].dt.hour
+ph_verlauf_hour["wochentag"] = ph_verlauf_hour["timestamp_hour"].dt.day_name()
+ph_verlauf_hour["stunde"] = ph_verlauf_hour["timestamp_hour"].dt.hour
 
 # Mittelwert der belegten Plätze, gruppiert nach Wochentag und Stunde
-mittelwerte = ph_verlauf_hour.groupby(['wochentag', 'stunde'])['belegt'].mean().reset_index()
-mittelwerte.rename(columns={'belegt': 'mittelwert_belegt'}, inplace=True)
+mittelwerte = (
+    ph_verlauf_hour.groupby(["wochentag", "stunde"])["belegt"].mean().reset_index()
+)
+mittelwerte.rename(columns={"belegt": "mittelwert_belegt"}, inplace=True)
 
 # Hinweis ausgeben
 print("""Im Folgenden ein Liniendiagramm mit erwarteter Auslastung nach Wochentagen und Uhrzeit.
