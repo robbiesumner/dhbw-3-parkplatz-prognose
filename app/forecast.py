@@ -13,18 +13,18 @@ ph_eigenschaften = pd.read_csv("../data/meta_data.csv")
 
 # Filterung Ladesäule
 ladesaeule_filter = input("Muss das gewünschte Parkhaus eine Ladesäule besitzen? 1: Ja, 0: Nein")
-if (ladesaeule_filter == "1"):
+if (ladesaeule_filter in ["1", "Ja", "ja"]):
     ph_eigenschaften = ph_eigenschaften[ph_eigenschaften['Ladestation'] == True]
-elif (ladesaeule_filter == "0"):
+elif (ladesaeule_filter in ["0", "Nein", "Ne", "nein", "ne"]):
     pass
 else: 
     print("Falsche Angabe bei der Ladesäule. Keine Filterung vorgenommen.")
 
 # Filterung Aufzug
 aufzug_filter = input("Muss das gewünschte Parkhaus einen Aufzug besitzen? 1: Ja, 0: Nein")
-if (aufzug_filter == "1"):
+if (aufzug_filter in ["1", "Ja", "ja"]):
     ph_eigenschaften = ph_eigenschaften[ph_eigenschaften['Aufzug'] == True]
-elif (aufzug_filter == "0"):
+elif (aufzug_filter in ["0", "Nein", "Ne", "nein", "ne"]):
     pass
 else: 
     print("Falsche Angabe beim Aufzug. Keine Filterung vorgenommen.")
