@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 
 
-def scrape_to_csv(parking_lot):
+def scrape_free_spots(parking_lot):
     BASE_URL = "https://web1.karlsruhe.de/service/Parken/detail.php?id="
 
     # already scraped data
@@ -75,4 +75,4 @@ if __name__ == "__main__":
     ]
 
     for parking_lot in parking_lots:
-        scrape_to_csv(parking_lot)
+        scrape_free_spots(parking_lot)
