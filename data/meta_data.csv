@@ -1,21 +1,21 @@
-Parkplatz,Parkplatzname,Durchfahrtshoehe,Aufzug,Ladestation,Gesamtanzahl,Behindertenstellplaetze
+Parkhauskuerzel,Parkplatzname,Durchfahrtshoehe,Aufzug,Ladestation,Gesamtanzahl,Behindertenstellplaetze
 K01,Kongresszentrum PH1,190,True,False,495,5
 K02,Kongresszentrum PH2,190,True,True,495,12
-K03,Luisenstrasse,200,False,True,210,0
+K03,Luisenstraße,200,False,True,210,0
 K04,Staatstheater,200,False,False,230,0
 N02,Passagehof,210,True,False,392,25
-N03,Herrenstrasse/Zirkel,200,True,False,269,13
-N05,Schlossplatz,200,True,True,456,3
-N06,Kreuzstrasse,205,False,False,52,0
+N03,Herrenstraße / Zirkel,200,True,False,269,13
+N05,Schlossplatz,200,True,True,566,3
+N06,Kreuzstraße,205,False,False,52,0
 N07,Kronenplatz,210,True,True,449,5
 S01,Landesbibliothek,200,True,True,68,2
 S02,Friedrichsplatz,200,True,False,250,2
-S03,Galeria Kaufhof,200,True,False,260,5
+S03,Galeria Karlsruhe,200,True,False,260,5
 S04,IHK,180,True,True,150,4
 S05,Marktplatz,200,True,True,230,1
-S06,Mendelssohnplatz,200,True,False,434,11
+S06,Mendelssohnplatz,200,True,False,462,11
 S07,Ettlinger Tor,210,True,False,843,21
 W01,Stephanplatz,195,True,False,190,4
-W02,Akademiestrasse,190,True,False,95,0
+W02,Akademiestraße,190,True,False,96,0
 W03,Postgalerie,200,True,True,273,10
 W04,Ludwigsplatz,210,True,False,250,2
